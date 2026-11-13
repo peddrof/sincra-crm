@@ -41,6 +41,9 @@ Não trate sugestão como decisão. Se algo depender de uma decisão em aberto, 
   `link`, `db push`, `gen types typescript --project-id`, `functions deploy`. Nunca `start`, `db reset`, `db diff`, `db pull`.
 - Edge Functions e webhooks: por enquanto, rotas de API do Next.js (`app/api/...`).
 - **Sugestão:** Next.js (App Router) + TypeScript + Tailwind.
+- **Código:** repositório privado `felipespk/sincra-plataforma` no GitHub, branch `main` (criado em 13/11/2026).
+  Commit e push só quando o Felipe pedir. `.env.local` fica fora (`.gitignore`); antes de cada commit,
+  conferir que nenhuma chave entrou.
 - **Publicação:** depois, pelo Pedro, no domínio da Sincra (provedor a definir).
 - Integrações: Google Drive API, Google Calendar API (F2), GitHub webhooks (após publicar), Meta (Instagram/WhatsApp, F3+).
   Sem API de assinatura eletrônica.
