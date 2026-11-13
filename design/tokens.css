@@ -1,0 +1,65 @@
+/* Tokens da identidade visual Sincra — fonte: Brandbook Sincra.
+   Ver docs/09-identidade-visual.md. Não inventar cores fora desta lista. */
+
+:root {
+  /* Paleta principal */
+  --sincra-azul: #147DFF;          /* ação, destaque, céu */
+  --sincra-azul-profundo: #003DFF; /* só no degradê do símbolo */
+  --sincra-azul-tinta: #0B63D9;    /* links e texto azul */
+  --sincra-tinta: #13161F;         /* texto, valores, fundo escuro */
+  --sincra-branco: #FFFFFF;
+  --sincra-superficie: #F8F9FA;    /* blocos e painéis */
+
+  /* Escala do azul */
+  --sincra-azul-25: #F3F8FF;
+  --sincra-azul-50: #E7F2FF;
+  --sincra-azul-100: #D6E8FF;
+  --sincra-azul-200: #9CC5FF;
+  --sincra-azul-300: #6EAFFF;
+  --sincra-azul-400: #3F92FF;
+  --sincra-azul-500: #147DFF;
+  --sincra-azul-600: #0B63D9;
+  --sincra-azul-700: #003DFF;
+
+  /* Neutros — Cinza 2 e 3 não servem para texto */
+  --sincra-tinta-2: #2F3440;
+  --sincra-tinta-3: #464C59;
+  --sincra-cinza: #6A7180;
+  --sincra-cinza-2: #8A919E;
+  --sincra-cinza-3: #B4BAC4;
+  --sincra-ponto: #D3D8DF;          /* pontos do "fio com pontos" */
+  --sincra-linha: #E6E9EE;
+  --sincra-linha-suave: #EEF0F3;
+
+  /* Status — sempre com a palavra */
+  --sincra-ok: #1A7F4B;        --sincra-ok-bg: #E9F7EF;
+  --sincra-atencao: #8F5A00;   --sincra-atencao-bg: #FFF6DD;
+  --sincra-critico: #B42318;   --sincra-critico-bg: #FEF0EE;
+  --sincra-andamento: #0B63D9; --sincra-andamento-bg: #E7F2FF;
+  --sincra-neutro: #6A7180;    --sincra-neutro-bg: #F8F9FA;
+
+  /* Degradês */
+  --sincra-ceu: linear-gradient(180deg, #F3F8FF 0%, #C6E0FF 16%, #6EAFFF 42%, #2F8DFF 72%, #147DFF 100%);
+  --sincra-simbolo-degrade: linear-gradient(45deg, #003DFF 0%, #147DFF 100%); /* nunca como fundo */
+
+  /* Tipografia */
+  --sincra-fonte: 'Inter', Arial, sans-serif;                      /* toda a interface */
+  --sincra-fonte-comunicacao: 'Plus Jakarta Sans', Arial, sans-serif; /* só login/PDFs, nunca no produto */
+
+  /* Forma */
+  --sincra-raio-pilula: 999px;
+  --sincra-raio-cartao: 16px;
+  --sincra-raio-cartao-lg: 20px;
+  --sincra-raio-campo: 10px;
+  --sincra-sombra-cartao: 0 1px 3px rgba(19, 22, 31, 0.06);
+  --sincra-sombra-destaque: 0 24px 60px rgba(11, 63, 140, 0.14);
+  --sincra-sombra-flutuante: 0 12px 30px rgba(11, 63, 140, 0.28);
+}
+
+body {
+  font-family: var(--sincra-fonte);
+  color: var(--sincra-tinta);
+  background: var(--sincra-branco);
+}
+
+.tabular { font-variant-numeric: tabular-nums; }

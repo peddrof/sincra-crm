@@ -1,0 +1,21 @@
+@import "tailwindcss";
+/* Identidade visual: Brandbook Sincra (ver docs/09-identidade-visual.md). Só cores destes tokens. */
+@import "../design/tokens.css";
+@import "../design/tailwind-theme.css";
+
+/* Interface sempre clara: o brandbook não define tema escuro para o produto. */
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-tinta);
+  background: var(--sincra-branco);
+}
+
+/* Números tabulares em valores, datas e tabelas. */
+.tabular,
+table {
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,46 @@
+/* Tema Tailwind v4 com os tokens da Sincra.
+   Uso: no app/globals.css → @import "tailwindcss"; @import "../design/tailwind-theme.css";
+   Gera classes como bg-sincra, text-tinta, bg-superficie, text-ok, bg-ok-bg, font-sans. */
+
+@theme {
+  --color-sincra: #147DFF;
+  --color-sincra-profundo: #003DFF;
+  --color-sincra-tinta: #0B63D9;
+
+  --color-azul-25: #F3F8FF;
+  --color-azul-50: #E7F2FF;
+  --color-azul-100: #D6E8FF;
+  --color-azul-200: #9CC5FF;
+  --color-azul-300: #6EAFFF;
+  --color-azul-400: #3F92FF;
+  --color-azul-500: #147DFF;
+  --color-azul-600: #0B63D9;
+  --color-azul-700: #003DFF;
+
+  --color-tinta: #13161F;
+  --color-tinta-2: #2F3440;
+  --color-tinta-3: #464C59;
+  --color-cinza: #6A7180;
+  --color-cinza-2: #8A919E;   /* não usar em texto */
+  --color-cinza-3: #B4BAC4;   /* não usar em texto */
+  --color-ponto: #D3D8DF;
+  --color-linha: #E6E9EE;
+  --color-superficie: #F8F9FA;
+
+  --color-ok: #1A7F4B;        --color-ok-bg: #E9F7EF;
+  --color-atencao: #8F5A00;   --color-atencao-bg: #FFF6DD;
+  --color-critico: #B42318;   --color-critico-bg: #FEF0EE;
+  --color-andamento: #0B63D9; --color-andamento-bg: #E7F2FF;
+  --color-neutro: #6A7180;    --color-neutro-bg: #F8F9FA;
+
+  --font-sans: var(--font-inter), 'Inter', Arial, sans-serif;
+  --font-display: var(--font-jakarta), 'Plus Jakarta Sans', Arial, sans-serif; /* só login/PDFs */
+
+  --radius-cartao: 16px;
+  --radius-cartao-lg: 20px;
+  --radius-campo: 10px;
+
+  --shadow-cartao: 0 1px 3px rgba(19, 22, 31, 0.06);
+  --shadow-destaque: 0 24px 60px rgba(11, 63, 140, 0.14);
+  --shadow-flutuante: 0 12px 30px rgba(11, 63, 140, 0.28);
+}
