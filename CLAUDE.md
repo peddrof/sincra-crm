@@ -118,7 +118,12 @@ Não trate sugestão como decisão. Se algo depender de uma decisão em aberto, 
    Módulo novo com mutação: crie gatilho igual ao do CRM ou grave o evento na Server Action (actor_id = sócio).
    Negócios, tarefas, documentos e configurações (10/11/2026): eventos por gatilho (`private.registrar_evento_operacao`);
    status do negócio sai da etapa (`private.ajustar_negocio`: operando = ganho, perdido = perdido) e a etapa tem de ser
-   do mesmo funil. Kanban em `app/(app)/negocios/` (arrastar chama `moverNegocio`). Tarefas em `components/tarefas/`.
+   do mesmo funil. Kanban em `app/(app)/negocios/` (arrastar chama `moverNegocio`). Tarefas em `components/tarefas/`:
+   quadro semanal (`QuadroSemana`, arrastar chama `moverTarefa`; qualquer sócio move, igual a Negócios). Pedido entre sócios =
+   `created_by <> assignee_id`: nasce sem `due_date`, com `requested_date`; eventos por `private.registrar_evento_tarefa`
+   (13/11/2026, substitui o ramo de tarefas de `registrar_evento_operacao`). Andamento em `tasks.progresso`, prioridade,
+   `start_date` (vários dias), etapas em `task_steps` e lixeira por `deleted_at`: toda consulta de tarefas precisa de
+   `.is("deleted_at", null)` (o alerta `alertas_followup` já ignora a lixeira).
    Documentos: modelos em `/documentos/modelos`, listas por organização em `/organizacoes/[id]/documentos/`; o navegador
    envia o arquivo direto ao bucket privado `documentos` (25 MB) e `registrarArquivo` confere a pasta e grava o registro.
    **Pendente:** contratos (aguardam o contrato base).

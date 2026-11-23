@@ -160,10 +160,23 @@ Depois de agendar: Adicionar ao Google Agenda (link) · baixar convite .ics · c
 
 ## Tarefas
 
-- Visões: Minhas · Todas abertas · Concluídas
-- Nova tarefa: Título* · Responsável · Prazo (data) · Organização
-- Ações: concluir · reabrir
-- Status: `aberta` · `concluida` · `cancelada`
+- Abas: Semana · Andamento · Lixeira; filtro por sócio: Todos · Felipe · Pedro · Lessa (os três veem tudo)
+- Semana: 7 colunas (Seg a Dom) cabendo na tela; embaixo A agendar · Atrasadas (só se houver) · Próxima semana
+  - Arrastar muda a entrega (`due_date`); tarefa de vários dias anda inteira (início acompanha)
+  - Tarefa com início: faixa tracejada em cada dia entre o início e a véspera da entrega
+  - "+" em cada dia: tarefa para mim (ou pedido, com outro sócio filtrado)
+- Andamento: colunas Para começar · Em andamento · Pausada · Concluída (últimos 30 dias); arrastar muda o andamento
+- Círculo do cartão: conclui (ou reabre) sem abrir o painel
+- Cartões: Compactos (título, responsável, etapas; abre ao clicar) ou Abertos (padrão do design: título + criada em,
+  linha, chips de prioridade, responsável, período, Atrasada, pedido p/, etapas e barra de progresso); preferência guardada no navegador
+- Painel da tarefa (clique): andamento · etapas (marcar, tirar, adicionar) · título · descrição · prioridade · início · entrega · data pedida (quem pediu) · Mover para a lixeira
+- Prioridade: Urgente · Importante · Normal · Baixa
+- Qualquer sócio arrasta e edita qualquer tarefa (igual a Negócios); mover não troca o responsável; data pedida: só quem pediu
+- Nova tarefa (recolhida): Título* · Responsável · Início (opcional) · Entrega (ou Data pedida) · Prioridade · Organização
+- Pedido: tarefa para outro sócio nasce em A agendar com a data pedida (`requested_date`); quem recebeu arrasta para o dia
+- Lixeira: quem pediu ou quem recebeu manda; Restaurar · Apagar de vez (confirma) · Esvaziar lixeira (confirma); some de quadro, início, negócio e alertas
+- Feed: pediu · agendou · remarcou · tirou do dia · começou · pausou · concluiu (dia e andamento só em pedidos); link abre o painel da tarefa
+- Status no banco: `status` aberta/concluida/cancelada + `progresso` a_fazer/em_andamento/pausada + `deleted_at` (lixeira)
 
 ## Documentos
 

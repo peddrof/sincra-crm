@@ -84,7 +84,7 @@ export function linkDoEvento(evento: {
     return { href: `/negocios/${evento.entity_id}`, rotulo: "Abrir negócio" };
   }
   if (evento.entity_type === "tasks") {
-    return { href: "/tarefas?ver=abertas", rotulo: "Abrir tarefas" };
+    return { href: evento.entity_id ? `/tarefas?tarefa=${evento.entity_id}` : "/tarefas", rotulo: "Abrir no quadro" };
   }
   if (evento.entity_type === "document_requests" && evento.entity_id && evento.organization_id) {
     return { href: `/organizacoes/${evento.organization_id}/documentos/${evento.entity_id}`, rotulo: "Abrir lista" };

@@ -1404,6 +1404,51 @@ export type Database = {
           },
         ]
       }
+      task_steps: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          done: boolean
+          id: string
+          position: number
+          task_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          done?: boolean
+          id?: string
+          position?: number
+          task_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          done?: boolean
+          id?: string
+          position?: number
+          task_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_steps_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_steps_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tasks: {
         Row: {
           assignee_id: string | null
@@ -1411,10 +1456,16 @@ export type Database = {
           created_at: string
           created_by: string | null
           deal_id: string | null
+          deleted_at: string | null
+          deleted_by: string | null
           description: string | null
           due_date: string | null
+          requested_date: string | null
+          start_date: string | null
           id: string
           organization_id: string | null
+          prioridade: string
+          progresso: string
           status: Database["public"]["Enums"]["task_status"]
           title: string
         }
@@ -1424,10 +1475,16 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           deal_id?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           description?: string | null
           due_date?: string | null
+          requested_date?: string | null
+          start_date?: string | null
           id?: string
           organization_id?: string | null
+          prioridade?: string
+          progresso?: string
           status?: Database["public"]["Enums"]["task_status"]
           title: string
         }
@@ -1437,14 +1494,27 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           deal_id?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           description?: string | null
           due_date?: string | null
+          requested_date?: string | null
+          start_date?: string | null
           id?: string
           organization_id?: string | null
+          prioridade?: string
+          progresso?: string
           status?: Database["public"]["Enums"]["task_status"]
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "tasks_deleted_by_fkey"
+            columns: ["deleted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "tasks_assignee_id_fkey"
             columns: ["assignee_id"]
