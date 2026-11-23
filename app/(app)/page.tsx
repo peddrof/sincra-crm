@@ -156,14 +156,14 @@ async function Indicadores() {
   const [{ data: negocios }, { data: itens }, { count: atrasadas }] = await Promise.all([
     supabase.from("deals").select("amount_estimate_cents").eq("status", "aberto"),
     supabase.from("document_request_items").select("id").eq("required", true).in("status", ["pendente", "rejeitado"]),
-    supabase.from("tasks").select("id", { count: "exact", head: true }).eq("status", "aberta").lt("due_date", hoje),
+    supabase.from("tasks").select("id", { count: "exact", head: true }).eq("status", "aberta").is("deleted_at", null).lt("due_date", hoje),
   ]);
   const valor = (negocios ?? []).reduce((s, n) => s + (n.amount_estimate_cents ?? 0), 0);
   const cards = [
     { rotulo: "Negócios abertos", valor: String(negocios?.length ?? 0), href: "/negocios", destaque: true },
     { rotulo: "Valor em negociação", valor: valor ? formatarReaisCompacto(valor) : "0", prefixo: "R$", href: "/negocios", destaque: false },
     { rotulo: "Documentos pendentes", valor: String(itens?.length ?? 0), href: "/documentos", destaque: false },
-    { rotulo: "Tarefas atrasadas", valor: String(atrasadas ?? 0), href: "/tarefas?ver=abertas", destaque: false, alerta: (atrasadas ?? 0) > 0 },
+    { rotulo: "Tarefas atrasadas", valor: String(atrasadas ?? 0), href: "/tarefas", destaque: false, alerta: (atrasadas ?? 0) > 0 },
   ];
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -250,6 +250,7 @@ async function MinhasTarefas() {
     .select("id, title, status, due_date, assignee:profiles!tasks_assignee_id_fkey(full_name, nickname), deal:deals(id, title), organization:organizations(id, trade_name)")
     .eq("assignee_id", socio.id)
     .eq("status", "aberta")
+    .is("deleted_at", null)
     .order("due_date", { ascending: true, nullsFirst: false })
     .limit(6);
 

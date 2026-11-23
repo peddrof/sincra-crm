@@ -43,6 +43,7 @@ async function NegocioConteudo({ params }: { params: Promise<{ id: string }> }) 
         .from("tasks")
         .select("id, title, status, due_date, assignee:profiles!tasks_assignee_id_fkey(full_name, nickname)")
         .eq("deal_id", id)
+        .is("deleted_at", null)
         .order("status")
         .order("due_date", { ascending: true, nullsFirst: false }),
       supabase
@@ -264,6 +265,7 @@ async function NegocioConteudo({ params }: { params: Promise<{ id: string }> }) 
             <NovaTarefaForm
               socios={(socios ?? []).map((s) => ({ id: s.id, nome: nomeCurto(s) }))}
               responsavelPadrao={n.owner_id ?? socio.id}
+              eu={socio.id}
               organizacaoId={n.organization.id}
               negocioId={n.id}
             />

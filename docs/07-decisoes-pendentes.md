@@ -59,6 +59,11 @@ Ajustes decididos em 11/11/2026 (Felipe):
   ou confirmação do Felipe (nenhuma marcada até agora). Pedro e Lessa não entram como contatos (são sócios com login).
 - 12/11/2026: localizações dos contatos informadas pelo Felipe; Hospital São José (Ituiutaba/MG) criado com Jaisson e
   Rogério; pessoa pode estar em mais de uma organização (Jabez e Marlon: Vita Curitiba + Hospital VITA Batel).
+- 13/11/2026: Tarefas viraram quadro semanal com colunas por dia (não por pessoa). Os três sócios veem as tarefas de
+  todos e podem pedir tarefa um ao outro: o pedido fica em "A agendar" com a data pedida, e quem recebeu escolhe o dia
+  arrastando (desde 13/11 qualquer sócio pode arrastar qualquer cartão, igual a Negócios). Escolher dia, remarcar e concluir um pedido aparecem no feed para os três.
+  Na mesma data: andamento (Para começar, Em andamento, Pausada, Concluída), prioridade, tarefa de vários dias com
+  etapas, lixeira com restaurar e apagar de vez, cartões compactos ou abertos no padrão do design enviado pelo Felipe.
 
 Consequências: com Ollama local, a extração só roda enquanto o app estiver rodando no PC do Felipe. Ao publicar,
 será preciso decidir outro fornecedor para o servidor (ou manter a extração como passo feito do PC do Felipe).
