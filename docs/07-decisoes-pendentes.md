@@ -75,7 +75,7 @@ Felipe não participou desta conversa; confirmar com ele os itens que revisam de
 | # | Decisão | Decisão tomada | Quem / quando |
 |---|---|---|---|
 | 19 | Hospedagem e endereço | Código no GitHub e na Vercel do Pedro (time PV2CO), em endereço `*.vercel.app`, **separado do sincra.app** | Pedro, 22/11/2026 |
-| 20 | Banco | Continua o projeto Supabase do Felipe (`sincra-plataforma-dev`), que passa a servir a versão publicada. Não vai para o Supabase do Pedro | Pedro, 22/11/2026 |
+| 20 | Banco | **Revisada pelo Felipe em 23/11/2026:** o projeto `sincra-plataforma-dev` (com os dados atuais) vai para a org PV2CO do Pedro, que passa para o plano Pro; a org do Felipe já tem 2 projetos ativos. Caminho: transferência de projeto no Supabase (mantém dados, logins, arquivos, URL e chaves). Só funciona se a org de destino não for gerenciada pela Vercel Marketplace | Pedro 22/11, Felipe 23/11/2026 |
 | 21 | Login | **E-mail e senha** dos três sócios (o link mágico dependia do e-mail padrão do Supabase). Cloudflare Zero Trust foi a primeira opção, mas não protege um endereço `*.vercel.app` (exige DNS na Cloudflare) | Pedro, 22/11/2026 |
 | 22 | Reuniões | **Revisa a #15 e a #16:** sem IA na plataforma. Os sócios resumem no Claude ou no ChatGPT (já fazem isso, inclusive com áudio) e trazem o .md; a plataforma lê o JSON do prompt, se houver, e segue para a revisão. Ollama fica opcional no PC (`IA_PROVEDOR=ollama`) | Pedro, 22/11/2026 |
 | 23 | Drive | **Revisa a #17:** pasta de uma conta Gmail da Sincra, compartilhada pelos três, pela API do Google (OAuth dessa conta). A pasta sincronizada `G:` só vale rodando no PC | Pedro, 22/11/2026 |
