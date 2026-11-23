@@ -10,7 +10,7 @@ import { getSocio } from "@/lib/auth";
 import { formatarData, formatarDataHora, nomeCurto } from "@/lib/crm";
 import { caminhoLegivel, driveLocalDisponivel, listarTranscricoesLocais, PREFIXO } from "@/lib/drive-local";
 import { apelidoDe } from "@/lib/feed";
-import { iaDisponivel, type ExtracaoReuniao } from "@/lib/ia/extracao";
+import { iaDisponivel, modoIa, type ExtracaoReuniao } from "@/lib/ia/extracao";
 import { linkGoogleAgenda, rotuloContexto, STATUS_REUNIAO } from "@/lib/reunioes";
 import { opcoesReuniao } from "@/lib/reunioes-dados";
 import { createClient } from "@/lib/supabase/server";
@@ -205,7 +205,9 @@ async function ReuniaoConteudo({ params }: { params: Promise<{ id: string }> }) 
         <Secao titulo="Analisando a transcrição">
           <AtualizarSozinho segundos={10} />
           <p className="text-sm leading-[22px] text-tinta-3">
-            O modelo local está lendo a transcrição. Neste computador isso leva alguns minutos. A página se atualiza sozinha.
+            {modoIa() === "manual"
+              ? "Lendo o texto. A página se atualiza sozinha."
+              : "O modelo local está lendo a transcrição. Neste computador isso leva alguns minutos. A página se atualiza sozinha."}
           </p>
           <BotaoDescartar id={r.id} rotulo="Cancelar e descartar" />
         </Secao>
@@ -232,7 +234,9 @@ async function ReuniaoConteudo({ params }: { params: Promise<{ id: string }> }) 
         <Secao titulo="Revise antes de gravar">
           {extracao?.cortada && (
             <p className="rounded-campo bg-atencao-bg px-3 py-2 text-sm text-atencao">
-              A transcrição é longa e só o começo foi lido pelo modelo local. Confira se faltou algo do final.
+              {modoIa() === "manual"
+                ? "O texto é longo e só o começo entrou no resumo. Prefira trazer o resumo do Claude ou do ChatGPT em vez da transcrição inteira."
+                : "A transcrição é longa e só o começo foi lido pelo modelo local. Confira se faltou algo do final."}
             </p>
           )}
           {!r.organization_id && (

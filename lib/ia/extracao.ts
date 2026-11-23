@@ -1,7 +1,10 @@
 import "server-only";
 
-// Extração de dados de reunião a partir da transcrição (decisão #15: modelo local com Ollama).
-// Para trocar de fornecedor (ex.: Claude), implemente outro `extrairComX` com a mesma saída e escolha por IA_PROVEDOR.
+// Extração de dados de reunião a partir da transcrição. Dois modos, escolhidos por IA_PROVEDOR:
+// - "manual" (padrão, 22/11/2026): os sócios resumem a reunião no Claude ou no ChatGPT, com a assinatura deles,
+//   e trazem o texto (.md no Drive ou colado). Se vier no formato JSON do prompt (`promptParaColar`), os campos
+//   chegam preenchidos; senão, o texto vira o resumo e o resto é preenchido na revisão. Nenhuma API paga.
+// - "ollama": modelo local no PC (decisão #15 original). Só funciona com o app rodando nesse PC.
 // Princípio do projeto: a IA só sugere. Nada vira registro sem a confirmação de um sócio.
 
 export type ProximoPasso = { tarefa: string; responsavel: string | null; prazo: string | null };
@@ -47,8 +50,16 @@ const ESQUEMA = {
   required: ["resumo", "decisoes", "proximos_passos", "pessoas"],
 };
 
+export type ModoIa = "manual" | "ollama";
+
+export function modoIa(): ModoIa {
+  return process.env.IA_PROVEDOR === "ollama" ? "ollama" : "manual";
+}
+
 // O Ollama está aberto e o modelo baixado? Responde em até 2 s (usado para avisar antes de analisar).
+// No modo manual não há nada para checar.
 export async function iaDisponivel(): Promise<{ ok: boolean; motivo?: string }> {
+  if (modoIa() === "manual") return { ok: true };
   const url = process.env.OLLAMA_URL ?? "http://127.0.0.1:11434";
   const modelo = process.env.OLLAMA_MODEL ?? "qwen2.5:7b";
   try {
@@ -79,14 +90,56 @@ function instrucoes(contexto: { organizacao: string; socios: string[]; hoje: str
   ].join("\n");
 }
 
+// Prompt para colar no Claude ou no ChatGPT junto com o áudio ou a transcrição. A resposta (JSON) é o que
+// se traz para a plataforma.
+export function promptParaColar(contexto: { socios: string[]; hoje: string }): string {
+  const exemplo = {
+    resumo: "…",
+    decisoes: ["…"],
+    proximos_passos: [{ tarefa: "…", responsavel: "Felipe", prazo: "AAAA-MM-DD" }],
+    pessoas: [{ nome: "…", cargo: null, email: null, telefone: null }],
+  };
+  return [
+    instrucoes({ organizacao: "a organização indicada no áudio ou na transcrição", ...contexto }),
+    "Formato exato (use null quando não souber):",
+    "```json",
+    JSON.stringify(exemplo, null, 2),
+    "```",
+  ].join("\n");
+}
+
+// Modo manual: aceita o JSON do prompt (puro, em bloco ```json ou no meio do texto). Se não houver JSON
+// reconhecível, o texto inteiro vira o resumo para o sócio editar na revisão.
+const LIMITE_RESUMO_MANUAL = 4_000;
+
+function lerManual(texto: string): { extracao: ExtracaoReuniao; cortada: boolean } {
+  const candidatos = [
+    texto.match(/```(?:json)?\s*([\s\S]*?)```/)?.[1],
+    texto.slice(texto.indexOf("{"), texto.lastIndexOf("}") + 1),
+  ];
+  for (const c of candidatos) {
+    if (!c?.trim()) continue;
+    try {
+      const o = JSON.parse(c) as Record<string, unknown>;
+      if (o && typeof o === "object" && "resumo" in o) return { extracao: normalizar(o), cortada: false };
+    } catch {
+      // segue para o próximo formato
+    }
+  }
+  const limpo = texto.trim();
+  return {
+    extracao: { resumo: limpo.slice(0, LIMITE_RESUMO_MANUAL), decisoes: [], proximos_passos: [], pessoas: [] },
+    cortada: limpo.length > LIMITE_RESUMO_MANUAL,
+  };
+}
+
 export async function extrairReuniao(
   transcricao: string,
   contexto: { organizacao: string; socios: string[]; hoje: string },
 ): Promise<{ extracao: ExtracaoReuniao; cortada: boolean }> {
+  if (modoIa() === "manual") return lerManual(transcricao);
   const cortada = transcricao.length > LIMITE_CARACTERES;
   const texto = cortada ? transcricao.slice(0, LIMITE_CARACTERES) : transcricao;
-  const provedor = process.env.IA_PROVEDOR ?? "ollama";
-  if (provedor !== "ollama") throw new Error(`Provedor de IA não suportado: ${provedor}`);
   const bruto = await conversarOllama(instrucoes(contexto), `Transcrição:\n\n${texto}`);
   return { extracao: normalizar(bruto), cortada };
 }

@@ -21,11 +21,14 @@ npm run dev
 
 App em http://localhost:3000.
 
-## IA local (reuniões)
+## Reuniões (resumo pelo Claude ou ChatGPT)
 
-A leitura das transcrições usa o Ollama no próprio PC (nada sai da máquina). Instalado com `winget install Ollama.Ollama`
-e o modelo com `ollama pull qwen2.5:7b` (4,7 GB). O app Ollama precisa estar aberto (ele inicia com o Windows);
-se não estiver, rode `ollama serve`. Neste notebook, uma reunião curta leva cerca de 2 minutos.
+Padrão desde 22/11/2026 (`IA_PROVEDOR=manual` ou vazio): os sócios resumem a reunião no Claude ou no ChatGPT, com a
+assinatura deles, e trazem o texto para a plataforma (.md na pasta de transcrições do Drive ou colado). Em
+**Reuniões → Copiar prompt** há o prompt que faz a resposta sair em JSON; nesse formato, resumo, decisões, próximos
+passos e pessoas chegam preenchidos na tela de revisão. Com texto livre, ele vira o resumo e o resto é preenchido à mão.
+
+Opcional, só no PC: `IA_PROVEDOR=ollama` usa o Ollama local (`ollama pull qwen2.5:7b`), como no começo do projeto.
 
 ## Google (Drive e agenda)
 
@@ -63,9 +66,10 @@ Não use `supabase start`, `db reset`, `db diff` nem `db pull`: eles precisam de
 
 ## Cadastrar um sócio
 
-Ninguém se cadastra sozinho (cadastro desligado no painel e `shouldCreateUser: false` no login). Para liberar alguém:
+Login por **e-mail e senha** (desde 22/11/2026; antes era link mágico, que dependia do e-mail padrão do Supabase).
+Ninguém se cadastra sozinho (cadastro desligado no painel). Para liberar alguém:
 
-1. No painel: Authentication → Users → Add user → Create new user, com o e-mail e "Auto Confirm User" marcado.
+1. No painel: Authentication → Users → Add user → Create new user, com e-mail, senha provisória e "Auto Confirm User".
 2. No SQL Editor, criar o perfil ativo (sem ele, a pessoa entra e cai em "Acesso não liberado"):
 
 ```sql
@@ -73,10 +77,30 @@ insert into public.profiles (id, full_name, nickname)
 select id, 'Nome Completo', 'Apelido' from auth.users where email = 'email@do.socio';
 ```
 
+Para quem já existe sem senha (Felipe, Pedro e Lessa entravam por link), defina uma provisória no SQL Editor:
+
+```sql
+update auth.users
+set encrypted_password = extensions.crypt('SENHA-PROVISORIA', extensions.gen_salt('bf'))
+where email = 'email@do.socio';
+```
+
+Cada sócio troca a própria senha em **Configurações → Minha senha**.
+Confira em Authentication → Providers → Email que o login por e-mail está ligado e o cadastro desligado.
+
 Para bloquear alguém: `update public.profiles set active = false where id = '...'`.
 
-O envio de e-mail padrão do Supabase só entrega para membros da organização no painel e tem limite baixo por hora.
-Para os três sócios receberem o link, eles entram na organização do Supabase ou vocês configuram um SMTP próprio.
+## Publicação (Vercel)
+
+Publicada pelo Pedro na Vercel (time PV2CO), num endereço `*.vercel.app`, separado do sincra.app. O banco continua
+o projeto Supabase do Felipe. `vercel.json` fixa as funções em São Paulo (`gru1`), perto do Supabase (sa-east-1).
+
+Variáveis na Vercel (Production): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
+`SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL` (endereço publicado) e, para o Drive, as `GOOGLE_*`
+(`docs/10-integracao-google.md`). Não definir `DRIVE_LOCAL_*` nem `IA_PROVEDOR=ollama` lá: dependem do PC.
+
+Documentos gravados na pasta sincronizada quando a plataforma rodava no PC (referências `local:`) só abrem por esse PC;
+os arquivos continuam no Drive. Os novos, com o Google conectado, vão pela API para a pasta do cliente.
 
 ## Estrutura
 

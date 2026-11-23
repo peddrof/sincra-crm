@@ -24,10 +24,10 @@ export default function LoginPage() {
             Entrar na plataforma
           </h1>
           <p className="text-sm leading-[22px] font-medium text-tinta">
-            <span className="text-cinza">Acesso só para os sócios.</span> Enviamos um link para o seu e-mail.
+            <span className="text-cinza">Acesso só para os sócios.</span> Entre com seu e-mail e senha.
           </p>
         </div>
-        <Suspense fallback={<div className="h-[136px]" />}>
+        <Suspense fallback={<div className="h-[212px]" />}>
           <LoginForm />
         </Suspense>
       </div>

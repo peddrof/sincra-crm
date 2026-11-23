@@ -1,6 +1,11 @@
 # 10 — Integração com o Google (Drive e Calendar)
 
-> **Hoje (11/11/2026) a plataforma usa a pasta sincronizada, não a API.** Com o app Google Drive para computador,
+> **Publicada (22/11/2026, decisão #23):** a versão na Vercel usa a API com a **conta Gmail da Sincra** que os três
+> sócios acessam. Onde este guia diz "conta do Felipe" ou "conta dona da pasta", leia essa conta. No passo 4,
+> acrescente o URI `https://<endereço-publicado>/integracoes/google/retorno`; no passo 7, as variáveis vão no painel
+> da Vercel, não no `.env.local`.
+>
+> **No PC (11/11/2026) a plataforma usa a pasta sincronizada, não a API.** Com o app Google Drive para computador,
 > a pasta aparece em `G:\Meu Drive\ORG. SINCRA` e a plataforma (rodando no PC do Felipe) lê e grava direto nela.
 > Configuração: variáveis `DRIVE_LOCAL_*` no `.env.local` (ver `.env.example`). A agenda está desligada.
 > O passo a passo abaixo é para quando a plataforma for publicada e precisar falar com o Google pela API.

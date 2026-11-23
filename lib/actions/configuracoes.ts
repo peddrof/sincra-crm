@@ -53,3 +53,22 @@ export async function salvarPrazos(_anterior: EstadoConfig, formData: FormData):
   refresh();
   return { ok: true };
 }
+
+// Troca da própria senha (login por e-mail e senha, 22/11/2026). Não vai para o feed: é dado pessoal do sócio.
+export async function trocarSenha(_anterior: EstadoConfig, formData: FormData): Promise<EstadoConfig> {
+  await getSocio();
+  const senha = String(formData.get("senha") ?? "");
+  const confirmacao = String(formData.get("confirmacao") ?? "");
+  if (senha.length < 10) return { erro: "Use pelo menos 10 caracteres." };
+  if (senha !== confirmacao) return { erro: "As duas senhas não são iguais." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password: senha });
+  if (error) {
+    if (error.code === "same_password") return { erro: "A nova senha é igual à atual." };
+    if (error.code === "weak_password") return { erro: "Senha fraca. Misture letras, números e símbolos." };
+    console.error("[config] falha ao trocar senha:", error.code, error.message);
+    return { erro: "Não foi possível trocar a senha agora." };
+  }
+  return { ok: true };
+}

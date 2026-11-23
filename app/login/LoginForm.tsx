@@ -2,29 +2,20 @@
 
 import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
-import { enviarLink, type EstadoLogin } from "./actions";
+import { entrar, type EstadoLogin } from "./actions";
 
 const inicial: EstadoLogin = { status: "inicial" };
 
 const mensagensDaUrl: Record<string, string> = {
-  link: "O link expirou ou já foi usado. Peça um novo.",
+  link: "O link expirou ou já foi usado. Entre com e-mail e senha.",
 };
 
-export function LoginForm() {
-  const [estado, acao, pendente] = useActionState(enviarLink, inicial);
-  const erroUrl = mensagensDaUrl[useSearchParams().get("erro") ?? ""];
+const classeCampo =
+  "h-11 rounded-campo border border-linha bg-white px-3 text-sm text-tinta outline-none placeholder:text-cinza focus:border-sincra focus:ring-3 focus:ring-azul-100";
 
-  if (estado.status === "enviado") {
-    return (
-      <div role="status" className="flex flex-col gap-2 rounded-campo bg-andamento-bg p-4">
-        <p className="text-sm leading-[22px] font-semibold text-tinta">Confira seu e-mail</p>
-        <p className="text-sm leading-[22px] text-tinta-3">
-          Se <span className="font-medium text-tinta">{estado.email}</span> tiver acesso, o link chega em instantes.
-          Abra o link neste mesmo navegador.
-        </p>
-      </div>
-    );
-  }
+export function LoginForm() {
+  const [estado, acao, pendente] = useActionState(entrar, inicial);
+  const erroUrl = mensagensDaUrl[useSearchParams().get("erro") ?? ""];
 
   const mensagemErro = estado.status === "erro" ? estado.mensagem : erroUrl;
 
@@ -44,7 +35,23 @@ export function LoginForm() {
           aria-invalid={estado.status === "erro"}
           aria-describedby={mensagemErro ? "login-erro" : undefined}
           placeholder="nome@exemplo.com"
-          className="h-11 rounded-campo border border-linha bg-white px-3 text-sm text-tinta outline-none placeholder:text-cinza focus:border-sincra focus:ring-3 focus:ring-azul-100"
+          className={classeCampo}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="senha" className="text-xs leading-4 font-semibold text-tinta-2">
+          Senha
+        </label>
+        <input
+          id="senha"
+          name="senha"
+          type="password"
+          autoComplete="current-password"
+          required
+          aria-invalid={estado.status === "erro"}
+          aria-describedby={mensagemErro ? "login-erro" : undefined}
+          className={classeCampo}
         />
       </div>
 
@@ -59,7 +66,7 @@ export function LoginForm() {
         disabled={pendente}
         className="h-11 rounded-full bg-sincra px-5 text-sm font-semibold text-white transition-colors hover:bg-sincra-tinta disabled:cursor-wait disabled:bg-azul-300"
       >
-        {pendente ? "Enviando link…" : "Enviar link de acesso"}
+        {pendente ? "Entrando…" : "Entrar"}
       </button>
     </form>
   );

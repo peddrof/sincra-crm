@@ -63,6 +63,18 @@ Ajustes decididos em 11/11/2026 (Felipe):
 Consequências: com Ollama local, a extração só roda enquanto o app estiver rodando no PC do Felipe. Ao publicar,
 será preciso decidir outro fornecedor para o servidor (ou manter a extração como passo feito do PC do Felipe).
 
+## Publicação — decididas em 22/11/2026 (Pedro)
+
+Felipe não participou desta conversa; confirmar com ele os itens que revisam decisões dele (#2, #15, #16, #17).
+
+| # | Decisão | Decisão tomada | Quem / quando |
+|---|---|---|---|
+| 19 | Hospedagem e endereço | Código no GitHub e na Vercel do Pedro (time PV2CO), em endereço `*.vercel.app`, **separado do sincra.app** | Pedro, 22/11/2026 |
+| 20 | Banco | Continua o projeto Supabase do Felipe (`sincra-plataforma-dev`), que passa a servir a versão publicada. Não vai para o Supabase do Pedro | Pedro, 22/11/2026 |
+| 21 | Login | **E-mail e senha** dos três sócios (o link mágico dependia do e-mail padrão do Supabase). Cloudflare Zero Trust foi a primeira opção, mas não protege um endereço `*.vercel.app` (exige DNS na Cloudflare) | Pedro, 22/11/2026 |
+| 22 | Reuniões | **Revisa a #15 e a #16:** sem IA na plataforma. Os sócios resumem no Claude ou no ChatGPT (já fazem isso, inclusive com áudio) e trazem o .md; a plataforma lê o JSON do prompt, se houver, e segue para a revisão. Ollama fica opcional no PC (`IA_PROVEDOR=ollama`) | Pedro, 22/11/2026 |
+| 23 | Drive | **Revisa a #17:** pasta de uma conta Gmail da Sincra, compartilhada pelos três, pela API do Google (OAuth dessa conta). A pasta sincronizada `G:` só vale rodando no PC | Pedro, 22/11/2026 |
+
 ## Fases seguintes — em aberto
 
 | # | Decisão | Observação |

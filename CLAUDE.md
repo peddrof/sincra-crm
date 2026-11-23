@@ -27,7 +27,11 @@ Diferencie sempre o que está decidido do que é sugestão. Hoje:
   - Taxas padrão em % ao mês (3,5% hospital, 6% médico), configuráveis.
   - A plataforma só grava no Drive dentro da pasta de cada cliente.
   - Adiados até a publicação: webhook do GitHub e push no celular.
-- **Sugestão (ainda não aprovada):** framework (Next.js), provedor de hospedagem, modelo de dados, regras de notificação.
+- **Decidido pelo Pedro em 22/11/2026** (#19–#23 em `docs/07-decisoes-pendentes.md`; confirmar com o Felipe o que revisa decisões dele):
+  publicação na Vercel do Pedro em `*.vercel.app` (fora do sincra.app), banco = projeto Supabase do Felipe,
+  login por e-mail e senha, reuniões sem IA na plataforma (resumo no Claude/ChatGPT, `IA_PROVEDOR=manual`),
+  Drive pela API com a conta Gmail da Sincra.
+- **Sugestão (ainda não aprovada):** framework (Next.js), modelo de dados, regras de notificação.
 - **Em aberto:** quais contratos entram no gerador (aguardando o contrato base do Felipe); repositórios no feed.
 
 Não trate sugestão como decisão. Se algo depender de uma decisão em aberto, pergunte ou deixe configurável.

@@ -9,7 +9,7 @@ const MENSAGENS: Record<string, { tipo: "ok" | "erro"; texto: string }> = {
   recusado: { tipo: "erro", texto: "A autorização foi cancelada no Google." },
   invalido: { tipo: "erro", texto: "O retorno do Google não confere. Tente conectar de novo." },
   erro: { tipo: "erro", texto: "Não foi possível concluir a conexão. Veja o log do servidor." },
-  faltando: { tipo: "erro", texto: "Faltam variáveis no .env.local para conectar." },
+  faltando: { tipo: "erro", texto: "Faltam variáveis de ambiente para conectar (.env.local no PC ou painel da Vercel)." },
 };
 
 export async function GoogleSecao({ situacao }: { situacao?: string }) {
@@ -49,7 +49,8 @@ export async function GoogleSecao({ situacao }: { situacao?: string }) {
         <div className="flex flex-col gap-2">
           <StatusPill tipo="atencao">Faltam credenciais</StatusPill>
           <p className="text-sm leading-[22px] text-tinta-3">
-            Preencha no <code className="rounded bg-superficie px-1">.env.local</code> e reinicie o servidor:{" "}
+            Preencha no <code className="rounded bg-superficie px-1">.env.local</code> (no PC) ou nas variáveis de ambiente
+            da Vercel (publicada) e reinicie ou publique de novo:{" "}
             <span className="font-medium text-tinta">{status.faltando.join(", ")}</span>. Passo a passo em{" "}
             <code className="rounded bg-superficie px-1">docs/10-integracao-google.md</code>.
           </p>

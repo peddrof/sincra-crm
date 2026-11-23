@@ -8,6 +8,8 @@ import { createClient } from "@/lib/supabase/server";
 import { DriveLocalSecao } from "./DriveLocalSecao";
 import { GoogleSecao } from "./GoogleSecao";
 import { PrazosForm } from "./PrazosForm";
+import { SenhaForm } from "./SenhaForm";
+import { driveLocalConfigurado } from "@/lib/drive-local";
 import { TaxasForm } from "./TaxasForm";
 
 export const metadata: Metadata = { title: "Configurações · Sincra" };
@@ -69,18 +71,20 @@ async function ConfiguracoesConteudo({ searchParams }: { searchParams: Promise<{
         />
       </Secao>
 
-      <Secao titulo="Drive (pasta sincronizada)">
-        <DriveLocalSecao />
+      <Secao titulo="Google (Drive e agenda)">
+        <GoogleSecao situacao={situacao} />
       </Secao>
 
-      <details className="rounded-cartao border border-linha bg-white p-6 shadow-cartao">
-        <summary className="cursor-pointer text-lg leading-6 font-semibold tracking-[-0.015em]">
-          Google pela API <span className="text-sm font-normal text-cinza">· para quando a plataforma for publicada</span>
-        </summary>
-        <div className="pt-4">
-          <GoogleSecao situacao={situacao} />
-        </div>
-      </details>
+      {/* Pasta sincronizada: só no PC em que ela existe (variáveis DRIVE_LOCAL_* no .env.local). */}
+      {driveLocalConfigurado() && (
+        <Secao titulo="Drive (pasta sincronizada neste computador)">
+          <DriveLocalSecao />
+        </Secao>
+      )}
+
+      <Secao titulo="Minha senha">
+        <SenhaForm />
+      </Secao>
 
       <Secao titulo="Sócios com acesso">
         <ul className="flex flex-col divide-y divide-linha">

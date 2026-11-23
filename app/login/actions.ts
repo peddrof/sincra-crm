@@ -1,47 +1,35 @@
 "use server";
 
-import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export type EstadoLogin =
-  | { status: "inicial" }
-  | { status: "enviado"; email: string }
-  | { status: "erro"; mensagem: string; email: string };
+export type EstadoLogin = { status: "inicial" } | { status: "erro"; mensagem: string; email: string };
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Pede o link mágico ao Supabase. Nunca cria usuário: só sócios cadastrados no painel entram.
-export async function enviarLink(_anterior: EstadoLogin, formData: FormData): Promise<EstadoLogin> {
+// E-mail e senha (22/11/2026): o link mágico dependia do e-mail padrão do Supabase, que só entrega para membros
+// da organização no painel. Ninguém se cadastra: os três sócios são criados no painel e a senha é definida lá
+// (ver README, "Cadastrar um sócio"). Sem perfil ativo em `profiles`, quem entra cai em /sem-acesso.
+export async function entrar(_anterior: EstadoLogin, formData: FormData): Promise<EstadoLogin> {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  if (!EMAIL.test(email)) {
-    return { status: "erro", mensagem: "Informe um e-mail válido.", email };
-  }
-
-  const origem =
-    process.env.NEXT_PUBLIC_APP_URL ?? (await headers()).get("origin") ?? "http://localhost:3000";
+  const senha = String(formData.get("senha") ?? "");
+  if (!EMAIL.test(email)) return { status: "erro", mensagem: "Informe um e-mail válido.", email };
+  if (!senha) return { status: "erro", mensagem: "Informe a senha.", email };
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { shouldCreateUser: false, emailRedirectTo: `${origem}/auth/confirm` },
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
 
   if (error) {
-    if (error.status === 429 || error.code === "over_email_send_rate_limit") {
-      return {
-        status: "erro",
-        mensagem: "Muitos pedidos de link em pouco tempo. Tente de novo em alguns minutos.",
-        email,
-      };
+    if (error.status === 429 || error.code === "over_request_rate_limit") {
+      return { status: "erro", mensagem: "Muitas tentativas em pouco tempo. Tente de novo em alguns minutos.", email };
     }
-    // E-mail sem conta: responde igual ao sucesso, para não revelar quem tem acesso.
-    const semConta =
-      error.code === "otp_disabled" || error.code === "signup_disabled" || /signups? not allowed/i.test(error.message);
-    if (!semConta) {
-      console.error("[login] falha ao enviar link:", error.code, error.message);
-      return { status: "erro", mensagem: "Não foi possível enviar o link agora. Tente de novo.", email };
+    // Mesma resposta para e-mail sem conta e senha errada, para não revelar quem tem acesso.
+    if (error.code === "invalid_credentials" || error.status === 400) {
+      return { status: "erro", mensagem: "E-mail ou senha incorretos.", email };
     }
+    console.error("[login] falha ao entrar:", error.code, error.message);
+    return { status: "erro", mensagem: "Não foi possível entrar agora. Tente de novo.", email };
   }
 
-  return { status: "enviado", email };
+  redirect("/");
 }

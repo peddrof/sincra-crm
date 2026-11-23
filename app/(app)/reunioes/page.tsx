@@ -8,7 +8,10 @@ import { formatarData, formatarDataHora } from "@/lib/crm";
 import { driveLocalDisponivel, listarTranscricoesLocais } from "@/lib/drive-local";
 import { listarTranscricoes, type ArquivoDrive } from "@/lib/google/drive";
 import { statusGoogle } from "@/lib/google/oauth";
-import { iaDisponivel } from "@/lib/ia/extracao";
+import { CopiarTexto } from "@/components/CopiarTexto";
+import { hojeIso } from "@/lib/datas";
+import { apelidoDe } from "@/lib/feed";
+import { iaDisponivel, modoIa, promptParaColar } from "@/lib/ia/extracao";
 import { rotuloContexto, STATUS_REUNIAO } from "@/lib/reunioes";
 import { opcoesReuniao } from "@/lib/reunioes-dados";
 import { createClient } from "@/lib/supabase/server";
@@ -38,6 +41,13 @@ async function ReunioesConteudo() {
     iaDisponivel(),
   ]);
 
+  const manual = modoIa() === "manual";
+  const prompt = manual
+    ? promptParaColar({
+        socios: ((await supabase.from("profiles").select("full_name, nickname").eq("active", true)).data ?? []).map(apelidoDe),
+        hoje: hojeIso(),
+      })
+    : "";
   const local = !google.conectado && (await driveLocalDisponivel());
   let arquivos: (Pick<ArquivoDrive, "id" | "name" | "modifiedTime"> & { legivel?: boolean })[] = [];
   let erroDrive: string | null = null;
@@ -62,8 +72,12 @@ async function ReunioesConteudo() {
           <p className="text-xs font-semibold text-sincra-tinta">Contexto</p>
           <h1 className="text-[28px] leading-[34px] font-semibold tracking-[-0.02em]">Reuniões</h1>
           <p className="text-base leading-6 font-medium">
-            <span className="text-cinza">A IA local lê a transcrição e sugere resumo, decisões e próximos passos.</span> Nada
-            entra no CRM sem a sua confirmação.
+            <span className="text-cinza">
+              {manual
+                ? "Traga o resumo feito no Claude ou no ChatGPT (arquivo .md no Drive ou colado aqui)."
+                : "A IA local lê a transcrição e sugere resumo, decisões e próximos passos."}
+            </span>{" "}
+            Nada entra no CRM sem a sua confirmação.
           </p>
         </div>
         <Link href="/reunioes/agendar" className={classeBotaoPrimario}>
@@ -71,6 +85,18 @@ async function ReunioesConteudo() {
         </Link>
       </div>
 
+      {manual ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-cartao border border-azul-100 bg-azul-25 p-4">
+          <div className="flex max-w-xl flex-col gap-0.5">
+            <span className="text-sm font-semibold text-sincra-tinta">Resumo pelo Claude ou ChatGPT</span>
+            <span className="text-xs text-tinta-3">
+              Cole este prompt junto com o áudio ou a transcrição. Com a resposta no formato dele, resumo, decisões, próximos
+              passos e pessoas chegam preenchidos; com outro texto, ele vira o resumo e você completa na revisão.
+            </span>
+          </div>
+          <CopiarTexto texto={prompt} rotulo="Copiar prompt" />
+        </div>
+      ) : (
       <div
         className={`flex flex-wrap items-center justify-between gap-3 rounded-cartao border p-4 ${
           ia.ok ? "border-azul-100 bg-azul-25" : "border-atencao/30 bg-atencao-bg"
@@ -86,6 +112,7 @@ async function ReunioesConteudo() {
         </div>
         <StatusPill tipo={ia.ok ? "concluido" : "atencao"}>{ia.ok ? "Pronta" : "Indisponível"}</StatusPill>
       </div>
+      )}
 
       {agendadas && agendadas.length > 0 && (
         <Secao titulo="Agendadas">
@@ -108,7 +135,7 @@ async function ReunioesConteudo() {
         </Secao>
       )}
 
-      <Secao titulo="Transcrições novas no Drive">
+      <Secao titulo={manual ? "Resumos e transcrições novos no Drive" : "Transcrições novas no Drive"}>
         {local && <p className="text-xs text-cinza">Lendo a pasta sincronizada deste computador: {process.env.DRIVE_LOCAL_TRANSCRICOES}</p>}
         {!google.conectado && !local ? (
           <p className="text-sm leading-[22px] text-tinta-3">
@@ -147,7 +174,9 @@ async function ReunioesConteudo() {
       </Secao>
 
       <details className="rounded-cartao border border-linha bg-white p-6 shadow-cartao">
-        <summary className="cursor-pointer text-lg leading-6 font-semibold tracking-[-0.015em]">Colar transcrição</summary>
+        <summary className="cursor-pointer text-lg leading-6 font-semibold tracking-[-0.015em]">
+          {manual ? "Colar resumo ou transcrição" : "Colar transcrição"}
+        </summary>
         <div className="pt-4">
           {ia.ok ? <ColarForm orgs={opcoes.orgs} negocios={opcoes.negocios} /> : <p className="text-sm text-cinza">{ia.motivo}</p>}
         </div>
