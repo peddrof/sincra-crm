@@ -30,8 +30,9 @@ Diferencie sempre o que está decidido do que é sugestão. Hoje:
 - **Decidido pelo Pedro em 22/11/2026** (#19–#23 em `docs/07-decisoes-pendentes.md`; confirmar com o Felipe o que revisa decisões dele):
   publicação na Vercel do Pedro em `*.vercel.app` (fora do sincra.app), banco = projeto Supabase do Felipe, que o Felipe
   decidiu em 23/11/2026 transferir para a org PV2CO do Pedro (Pro),
-  login por e-mail e senha, reuniões sem IA na plataforma (resumo no Claude/ChatGPT, `IA_PROVEDOR=manual`),
-  Drive pela API com a conta Gmail da Sincra.
+  reuniões sem IA na plataforma (resumo no Claude/ChatGPT, `IA_PROVEDOR=manual`), Drive pela API com a conta Gmail
+  da Sincra. Em 23/11/2026 (#24): endereço `gestao.sincra.app` e login pelo Cloudflare Zero Trust com Google
+  (`lib/cloudflare-access.ts`, `/auth/cloudflare`); e-mail e senha só no PC.
 - **Sugestão (ainda não aprovada):** framework (Next.js), modelo de dados, regras de notificação.
 - **Em aberto:** quais contratos entram no gerador (aguardando o contrato base do Felipe); repositórios no feed.
 

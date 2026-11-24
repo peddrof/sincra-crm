@@ -8,6 +8,7 @@ const inicial: EstadoLogin = { status: "inicial" };
 
 const mensagensDaUrl: Record<string, string> = {
   link: "O link expirou ou já foi usado. Entre com e-mail e senha.",
+  access: "Seu e-mail do Google não tem conta na plataforma. Peça a um sócio para cadastrá-lo com o mesmo e-mail.",
 };
 
 const classeCampo =

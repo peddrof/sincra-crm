@@ -79,6 +79,8 @@ Felipe não participou desta conversa; confirmar com ele os itens que revisam de
 | 21 | Login | **E-mail e senha** dos três sócios (o link mágico dependia do e-mail padrão do Supabase). Cloudflare Zero Trust foi a primeira opção, mas não protege um endereço `*.vercel.app` (exige DNS na Cloudflare) | Pedro, 22/11/2026 |
 | 22 | Reuniões | **Revisa a #15 e a #16:** sem IA na plataforma. Os sócios resumem no Claude ou no ChatGPT (já fazem isso, inclusive com áudio) e trazem o .md; a plataforma lê o JSON do prompt, se houver, e segue para a revisão. Ollama fica opcional no PC (`IA_PROVEDOR=ollama`) | Pedro, 22/11/2026 |
 | 23 | Drive | **Revisa a #17:** pasta de uma conta Gmail da Sincra, compartilhada pelos três, pela API do Google (OAuth dessa conta). A pasta sincronizada `G:` só vale rodando no PC | Pedro, 22/11/2026 |
+| 24 | Endereço e login | **Revisa a #19 e a #21:** endereço `gestao.sincra.app` (Cloudflare, zona sincra.app) e login pelo **Cloudflare Zero Trust com Google**, login único: a plataforma confere o token da Cloudflare e abre a sessão do Supabase do mesmo e-mail. Senha só para rodar no PC | Pedro, 23/11/2026 |
+| 25 | Banco na PV2CO | A org PV2CO do Supabase é gerenciada pela Vercel Marketplace, e o Supabase não transfere projetos para esse tipo de org. Caminho a escolher: org nova direto no Supabase (transferência, sem migração) ou projeto novo na PV2CO da Vercel (migração de esquema, dados, usuários e arquivos) | em aberto, 23/11/2026 |
 
 ## Fases seguintes — em aberto
 

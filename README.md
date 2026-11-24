@@ -90,14 +90,39 @@ Confira em Authentication → Providers → Email que o login por e-mail está l
 
 Para bloquear alguém: `update public.profiles set active = false where id = '...'`.
 
-## Publicação (Vercel)
+## Publicação (Vercel + Cloudflare)
 
-Publicada pelo Pedro na Vercel (time PV2CO), num endereço `*.vercel.app`, separado do sincra.app. O banco continua
-o projeto Supabase do Felipe. `vercel.json` fixa as funções em São Paulo (`gru1`), perto do Supabase (sa-east-1).
+Endereço: **https://gestao.sincra.app** (decisão #24). Código em `peddrof/sincra-crm`, projeto `sincra-crm` na Vercel
+(time PV2CO). `vercel.json` fixa as funções em São Paulo (`gru1`), perto do Supabase (sa-east-1).
 
-Variáveis na Vercel (Production): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
-`SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL` (endereço publicado) e, para o Drive, as `GOOGLE_*`
-(`docs/10-integracao-google.md`). Não definir `DRIVE_LOCAL_*` nem `IA_PROVEDOR=ollama` lá: dependem do PC.
+**Login:** Cloudflare Zero Trust (Access) com Google, na frente do domínio. O `proxy.ts` confere o token da
+Cloudflare em toda requisição (quem chama a Vercel direto leva 403) e `/auth/cloudflare` abre a sessão do Supabase
+para o mesmo e-mail, sem senha. O e-mail do Google de cada sócio precisa ser o mesmo da conta dele no Supabase.
+Sair encerra as duas sessões. O login por senha continua para rodar no PC (sem as variáveis `CF_ACCESS_*`).
+
+Variáveis na Vercel (Production):
+
+| Variável | De onde vem |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → Data API |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase → Project Settings → API Keys (publishable) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → API Keys (secret). Tipo Sensitive |
+| `NEXT_PUBLIC_APP_URL` | `https://gestao.sincra.app` |
+| `CF_ACCESS_TEAM_DOMAIN` | Cloudflare Zero Trust → Settings → Custom Pages (ex.: `sincra.cloudflareaccess.com`) |
+| `CF_ACCESS_AUD` | Zero Trust → Access → Applications → gestao → Overview → Application Audience (AUD) Tag |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_DRIVE_CLIENTES_FOLDER_ID`, `GOOGLE_DRIVE_TRANSCRICOES_FOLDER_ID` | `docs/10-integracao-google.md` |
+| `GOOGLE_TOKEN_ENCRYPTION_KEY` | `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`. Tipo Sensitive |
+| `IA_PROVEDOR` | `manual` (já definida) |
+
+Não definir `DRIVE_LOCAL_*` nem `IA_PROVEDOR=ollama` lá: dependem do PC.
+
+Cloudflare (zona sincra.app):
+1. DNS: `CNAME gestao → cname.vercel-dns.com`, **com proxy (nuvem laranja)**; sem proxy o Access não atua.
+   SSL/TLS da zona em **Full (strict)**. A Vercel pode mostrar aviso de configuração por ver IPs da Cloudflare; funciona.
+2. Zero Trust → Access → Applications → Add → Self-hosted: domínio `gestao.sincra.app`, login pelo Google,
+   política Allow com os e-mails dos três sócios.
+3. Vercel → Deployment Protection: Vercel Authentication em "All except custom domains", para os endereços
+   `*.vercel.app` não ficarem abertos (o 403 do proxy já barra, isto é a segunda camada).
 
 Documentos gravados na pasta sincronizada quando a plataforma rodava no PC (referências `local:`) só abrem por esse PC;
 os arquivos continuam no Drive. Os novos, com o Google conectado, vão pela API para a pasta do cliente.
