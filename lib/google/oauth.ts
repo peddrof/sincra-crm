@@ -22,7 +22,7 @@ export function configuracaoFaltando(): string[] {
   if (!process.env.GOOGLE_CLIENT_ID) faltam.push("GOOGLE_CLIENT_ID");
   if (!process.env.GOOGLE_CLIENT_SECRET) faltam.push("GOOGLE_CLIENT_SECRET");
   if (!process.env.GOOGLE_TOKEN_ENCRYPTION_KEY) faltam.push("GOOGLE_TOKEN_ENCRYPTION_KEY");
-  if (!adminConfigurado()) faltam.push("SUPABASE_SERVICE_ROLE_KEY");
+  if (!adminConfigurado()) faltam.push("SUPABASE_SECRET_KEY");
   return faltam;
 }
 

@@ -28,8 +28,7 @@ Diferencie sempre o que está decidido do que é sugestão. Hoje:
   - A plataforma só grava no Drive dentro da pasta de cada cliente.
   - Adiados até a publicação: webhook do GitHub e push no celular.
 - **Decidido pelo Pedro em 22/11/2026** (#19–#23 em `docs/07-decisoes-pendentes.md`; confirmar com o Felipe o que revisa decisões dele):
-  publicação na Vercel do Pedro em `*.vercel.app` (fora do sincra.app), banco = projeto Supabase do Felipe, que o Felipe
-  decidiu em 23/11/2026 transferir para a org PV2CO do Pedro (Pro),
+  publicação na Vercel do Pedro, banco = o projeto Supabase que o Felipe já usava, agora na org Sincra do Supabase (#25),
   reuniões sem IA na plataforma (resumo no Claude/ChatGPT, `IA_PROVEDOR=manual`), Drive pela API com a conta Gmail
   da Sincra. Em 23/11/2026 (#24): endereço `gestao.sincra.app` e login pelo Cloudflare Zero Trust com Google
   (`lib/cloudflare-access.ts`, `/auth/cloudflare`); e-mail e senha só no PC.
@@ -98,8 +97,8 @@ Não trate sugestão como decisão. Se algo depender de uma decisão em aberto, 
   (`is_active_member` no schema `private`, fora da API). Nomes iguais ao histórico do projeto remoto.
 - `lib/supabase/database.types.ts` — tipos gerados do projeto remoto; regerar após cada migração
 - Projeto Supabase de dev: `sincra-plataforma-dev`, ref `ailthwmnfzilabdcoxav`, sa-east-1, na org pessoal do Felipe
-  ("felipe agrohub project"). **Revisto pelo Felipe em 23/11/2026 (decisão #20):** o banco vai para a org do Pedro (PV2CO),
-  que vai para o plano Pro; a org do Felipe já tem 2 projetos ativos. Até a transferência, o projeto segue na org do Felipe.
+  ("felipe agrohub project"). **Desde 23/11/2026 (decisões #20 e #25):** o projeto está na org **Sincra** do Supabase,
+  criada pelo Pedro (a PV2CO do Supabase é gerenciada pela Vercel e não recebe transferências). Banco da versão publicada.
   Rodar o Security Advisor após cada migração.
 - `templates/contratos/` — modelos de contrato (vazio até o Felipe enviar o contrato base revisado)
 

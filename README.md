@@ -106,7 +106,7 @@ Variáveis na Vercel (Production):
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → Data API |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase → Project Settings → API Keys (publishable) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → API Keys (secret). Tipo Sensitive |
+| `SUPABASE_SECRET_KEY` | Supabase → API Keys (secret, `sb_secret_...`). Tipo Sensitive. A service_role legada também serve, em `SUPABASE_SERVICE_ROLE_KEY` |
 | `NEXT_PUBLIC_APP_URL` | `https://gestao.sincra.app` |
 | `CF_ACCESS_TEAM_DOMAIN` | Cloudflare Zero Trust → Settings → Custom Pages (ex.: `sincra.cloudflareaccess.com`) |
 | `CF_ACCESS_AUD` | Zero Trust → Access → Applications → gestao → Overview → Application Audience (AUD) Tag |

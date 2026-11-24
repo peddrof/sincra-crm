@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/login?erro=access", origin));
   };
 
-  if (!accessConfigurado || !adminConfigurado()) return falha("Access ou SUPABASE_SERVICE_ROLE_KEY não configurados");
+  if (!accessConfigurado || !adminConfigurado()) return falha("Access ou SUPABASE_SECRET_KEY não configurados");
   const email = await emailDoAccess(request);
   if (!email) return falha("token do Access ausente ou inválido");
 
